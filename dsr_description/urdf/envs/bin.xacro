@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<robot name="bin" xmlns:xacro="http://ros.org/wiki/xacro">
+  <link name="bin_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://dsr_description/meshes/envs/bin_link.stl"/>
+      </geometry>
+      <material name="bin_link_material">
+          <color rgba="0.9 0.9 0.9 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://dsr_description/meshes/envs/bin_link.stl"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </collision>
+  </link>
+  <joint name="bin_joint" type="fixed">
+    <origin xyz="-0.0125 -0.0125 0" rpy="0 0 0"/>
+    <parent link="table_link"/>
+    <child link="bin_link"/>
+  </joint>
+</robot>

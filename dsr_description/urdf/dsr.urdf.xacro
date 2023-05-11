@@ -1,0 +1,61 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="dsr">
+  <xacro:include filename="common_properties.xacro"/>
+
+  <xacro:arg name="hardware_plugin" default="fake"/>
+  <xacro:arg name="color"   default="white"/>
+  <xacro:arg name="gripper" default="robotiq_2f"/>
+  <xacro:arg name="envs" default="table"/>
+  <xacro:arg name="namespace" default="dsr"/>
+
+  <xacro:property name="cr" value="$(arg color)"/>
+  <xacro:property name="gr" value="$(arg gripper)"/>
+  <xacro:property name="envs" value="$(arg envs)"/>
+
+  <xacro:include filename="$(find dsr_description)/urdf/dsr.ros2_control.xacro"/>
+  <xacro:dsr_ros2_control hardware_plugin="$(arg hardware_plugin)"/>
+
+  <!-- footprint -->
+  <link name="base_footprint"/>
+
+  <joint name="base_link_joint" type="fixed">
+    <parent link="base_footprint" />
+    <child link="base_link" />
+  </joint>
+
+  <link name="base_link"/>
+
+  <!-- mobile -->
+
+  <!-- doosan manipulator -->  
+  <xacro:if value="${cr == 'white'}">
+     <xacro:include filename="$(find dsr_description)/urdf/dsr_robot/macro.m1013.white.xacro" />
+  </xacro:if>
+  <xacro:if value="${cr == 'blue'}">
+     <xacro:include filename="$(find dsr_description)/urdf/dsr_robot/macro.m1013.blue.xacro" />
+  </xacro:if>
+  <xacro:m1013 namespace="$(arg namespace)"/>
+
+  <joint name="base_fixed" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 ${-pi}"/>
+    <parent link="base_footprint"/>
+    <child link="base_0"/>
+  </joint>
+
+  <!-- robotiq 85 2f custom -->
+  <xacro:if value="${gr == 'robotiq_2f'}">
+    <xacro:include filename="$(find dsr_description)/urdf/gripper/robotiq_2f_85/robotiq_arg2f_85_long_model.xacro" />
+    <xacro:robotiq_arg2f_85_long_model parent="link6" prefix=""/>
+  </xacro:if>
+
+  <!-- environments -->
+  <xacro:if value="${envs == 'table'}">
+    <xacro:include filename="$(find dsr_description)/urdf/envs/table.xacro" />
+    <joint name="table_fixed" type="fixed">
+      <origin xyz="0.6875 0.0125 0" rpy="0 0 0"/>
+      <parent link="base_footprint"/>
+      <child link="table_link"/>
+    </joint>
+  </xacro:if>
+
+</robot>

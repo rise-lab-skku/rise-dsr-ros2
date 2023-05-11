@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="dsr">
+
+  <xacro:include filename="$(find dsr_moveit_config)/srdf/dsr.xacro" />
+  <xacro:dsr/>
+
+</robot>

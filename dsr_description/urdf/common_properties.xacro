@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+
+<robot name="xacro_properties" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:property name="M_PI" value="3.14159265358979" /> 
+  <xacro:property name="M_PI_2" value="1.5707963267949" /> 
+  <xacro:property name="M_PI_4" value="0.785398163" /> 
+  
+</robot>

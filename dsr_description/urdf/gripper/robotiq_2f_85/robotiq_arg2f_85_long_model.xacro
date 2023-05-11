@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<robot name="robotiq_arg2f_85_long_model" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="robotiq_arg2f_85_long_model" params="prefix parent">
+  
+  <!-- gripper connector -->
+  <link name="robotiq_coupler">
+    <visual>
+      <geometry>
+        <mesh filename="package://dsr_description/meshes/gripper/robotiq_2f_85/m1013_to_irb120.stl" />
+      </geometry>
+      <material name="dr_white"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://dsr_description/meshes/gripper/robotiq_2f_85/m1013_to_irb120.stl" />
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="robotiq_coupler_joint" type="fixed">
+    <origin xyz="0 0 0.005" rpy="0 0 0" />
+    <parent link="${parent}"/>
+    <child link="robotiq_coupler"/>
+  </joint>
+
+  <!--  robotiq gripper  -->
+  <xacro:include filename="$(find dsr_description)/urdf/gripper/robotiq_2f_85/robotiq_arg2f_85_long_model_macro.xacro" />
+  <xacro:robotiq_arg2f_85 prefix=""/>  
+  
+    <joint name="${prefix}robotiq_85_base_joint" type="fixed">
+      <origin xyz="0 0 0.008" rpy="0 0 0" />
+      <parent link="robotiq_coupler"/>
+      <child link="${prefix}robotiq_arg2f_base_link"/>
+    </joint>
+
+  </xacro:macro>
+</robot>

@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="dsr_ros2_control" params="hardware_plugin:=^|false">
+    <ros2_control name="HardwareInterface" type="system">
+      <hardware>
+        <xacro:if value="${hardware_plugin == 'fake'}">
+          <plugin>fake_components/GenericSystem</plugin>
+          <param name="state_following_offset">0.0</param>
+        </xacro:if>
+        <xacro:if value="${hardware_plugin == 'gazebo'}">
+          <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+        </xacro:if>
+        <xacro:if value="${hardware_plugin == 'isaacsim'}">
+          <plugin>isaac_ros2_control/IsaacSystem</plugin>
+          <param name="joint_commands_topic">/isaac_joint_commands</param>
+          <param name="joint_states_topic">/isaac_joint_states</param>
+        </xacro:if>
+        <xacro:if value="${hardware_plugin == 'coppelia'}">
+          <plugin>sim_hardware/SimInterface</plugin>
+          <param name="joint_commands_topic">/sim_interface/joint_commands</param>
+          <param name="joint_states_topic">/sim_interface/joint_states</param>
+        </xacro:if>
+        <xacro:if value="${hardware_plugin == 'real'}">
+          <xacro:ERROR_ros2_control_for_real_robot_unimplemented/>
+        </xacro:if>
+      </hardware>
+
+      <xacro:macro name="configure_joint" params="joint_name initial_position">
+        <joint name="${joint_name}">
+          <param name="initial_position">${initial_position}</param>
+          <command_interface name="position"/>
+          <state_interface name="position"/>
+          <state_interface name="velocity"/>
+          <state_interface name="effort"/>
+        </joint>
+      </xacro:macro>
+      
+      <xacro:configure_joint joint_name="joint1" initial_position="0.0"/>
+      <xacro:configure_joint joint_name="joint2" initial_position="0.0"/>
+      <xacro:configure_joint joint_name="joint3" initial_position="0.0"/>
+      <xacro:configure_joint joint_name="joint4" initial_position="0.0"/>
+      <xacro:configure_joint joint_name="joint5" initial_position="0.0"/>
+      <xacro:configure_joint joint_name="joint6" initial_position="0.0"/>
+
+    </ros2_control> 
+  </xacro:macro>
+
+</robot>
